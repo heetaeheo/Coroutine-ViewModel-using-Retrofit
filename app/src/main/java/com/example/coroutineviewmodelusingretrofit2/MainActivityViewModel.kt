@@ -2,6 +2,7 @@ package com.example.coroutineviewmodelusingretrofit2
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +13,11 @@ import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
 
-    lateinit var ImageLiveData : MutableLiveData<Bitmap>
+    private val _ImageLiveData : MutableLiveData<Bitmap> = MutableLiveData()
+    val ImageLiveData : LiveData<Bitmap> get() = _ImageLiveData
 
-    init {
-        ImageLiveData = MutableLiveData()
-    }
 
-    fun getImageObserver() : MutableLiveData<Bitmap>{
+    fun getImageObserver() : LiveData<Bitmap>{
         return ImageLiveData
     }
 
@@ -28,7 +27,7 @@ class MainActivityViewModel : ViewModel() {
             val response = retroInstance.getImageFromUrl(query)
             val bytes = response.bytes()
             val bitmap =  BitmapFactory.decodeByteArray(bytes,0,bytes.size)
-            ImageLiveData.postValue(bitmap)
+            _ImageLiveData.postValue(bitmap)
         }
     }
 }

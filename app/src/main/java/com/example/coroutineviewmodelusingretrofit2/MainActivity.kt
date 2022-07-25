@@ -26,9 +26,8 @@ class MainActivity : AppCompatActivity() {
 
 
         val viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-
-        viewModel.getImageObserver().observe(this, Observer<Bitmap>{
-            imageView.setImageBitmap(it)
+        viewModel.getImageObserver().observe(this, Observer<Bitmap>{ it ->
+                imageView.setImageBitmap(it)
         })
         viewModel.makeApiCall("4")
     }
